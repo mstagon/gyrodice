@@ -16,6 +16,17 @@ TickerProviderStateMixin{
     super.initState();
 
     controller = TabController(length: 2, vsync: this);
+    controller!.addListener(tabListner);
+  }
+
+  tabListner(){
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller!.removeListener(tabListner);
+    super.dispose();
   }
 
   @override
@@ -54,7 +65,14 @@ TickerProviderStateMixin{
   }
 
   BottomNavigationBar renderBottomNavigation() {
-    return BottomNavigationBar(items: [
+    return BottomNavigationBar(
+        currentIndex: controller!.index,
+        onTap: (int index){
+          setState(() {
+            controller!.animateTo(index);
+          });
+        },
+        items: [
       BottomNavigationBarItem(icon: Icon(
         Icons.note//edgesensor_high_outlined
       ),
